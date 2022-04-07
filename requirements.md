@@ -1,0 +1,26 @@
+- Table size : 5x5
+- Robot cannot fall
+- Disregard commands that make robot fall
+- Read commands:
+  - PLACE X,Y,F
+  - MOVE
+  - LEFT
+  - RIGHT
+  - REPORT
+- PLACE
+  - _init robot in table X,Y and F as facing NORTH/SOUTH/EAST/WEST
+  - discard invalid parameters
+  - not allowed outside of table
+- MOVE
+  - move robot one unit forward in direction of F
+  - ignore moves that will make robot fall
+- LEFT/RIGHT
+  - rotate 90* to specified direction w/o changing position
+- REPORT
+  - output X,Y and F of roboto
+- Ignore MOVE/LEFT/RIGHT/REPORT when robot not _init
+- Optional: stdio or file
+- Test data
+  - TBD
+- GUI not required
+- Error handling and input checking
