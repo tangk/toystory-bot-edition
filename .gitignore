@@ -2,3 +2,10 @@
 /cmake-build-debug-wsl/
 /toy-robot-tests/lib/
 .idea/
+/Makefile
+/CTestTestfile.cmake
+/CMakeCache.txt
+/cmake_install.cmake
+/toy-robot-tests/Makefile
+/toy-robot-tests/CTestTestfile.cmake
+/toy-robot-tests/cmake_install.cmake
