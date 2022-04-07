@@ -8,17 +8,28 @@
 #include <iostream>
 #include "robot.h"
 
+//TABLE dimensions
 const int MAX_X = 5;
 const int MAX_Y = 5;
 const int MIN_X = 0;
 const int MIN_Y = 0;
 
+Robot::Robot() {
+    //Assign member function to text representation
+    moveMap.insert({
+                           {"MOVE",   [this] { move(); }},
+                           {"RIGHT",  [this] { right(); }},
+                           {"LEFT",   [this] { left(); }},
+                           {"REPORT", [this] { report(); }},
+                   });
+}
+
 void Robot::_init() {
     std::vector<std::string> faces{"NORTH","EAST","WEST","SOUTH"};
-
     auto found = std::find(faces.begin(), faces.end(), _f);
-
+    //Set to true if valid PLACE command has taken place
     _initialized = true;
+    //Check if input is valid
     if ((_x > MAX_X) || (_y > MAX_Y) || (_x < MIN_X) || (_y < MIN_Y) || !(found != faces.end())) {
         _initialized = false;
     }
@@ -60,40 +71,46 @@ void Robot::move() {
         return;
     }
 
+    //Check if move is still withing table bounds
     if ((tmp_x > MAX_X || tmp_x < MIN_X) || (tmp_y > MAX_Y || tmp_y < MIN_Y)) {
         return;
     }
     _x = tmp_x;
     _y = tmp_y;
-    return;
 }
 
 void Robot::right() {
+    //Check if valid PLACE command has taken place
     if (!initialized()) {
         return;
     }
     std::vector<std::string> faces{"NORTH","EAST", "SOUTH", "WEST"};
     auto found = find(faces.cbegin(), faces.cend(), _f);
     if (found != faces.cend()) {
+        //If index is last, set to first index
         if (found == std::prev(faces.cend())) {
             _f = *(faces.cbegin());
             return;
         }
+        //Set to next index
         _f = *(std::next(found));
     }
 }
 
 void Robot::left() {
+    //Check if valid PLACE command has taken place
     if (!initialized()) {
         return;
     }
     std::vector<std::string> faces{"NORTH","EAST", "SOUTH", "WEST"};
     auto found = find(faces.cbegin(), faces.cend(), _f);
     if (found != faces.cend()) {
+        //If index is first, set to last
         if (found == faces.cbegin()) {
             _f = *std::prev(faces.cend());
             return;
         }
+        //Set to previous index
         _f = *std::prev(found);
     }
 }

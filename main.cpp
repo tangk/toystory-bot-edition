@@ -11,33 +11,34 @@ void readInstructions(std::istream& in) {
         if (code == "q") {
             break;
         }
-        std::smatch command_match;
-        if (std::regex_match(code, command_match, std::regex("(?:^|\\s+)PLACE\\s+(\\d+),(\\d+),(\\w+)"))) {
-            robot.place(std::stoi(command_match[1]), std::stoi(command_match[2]), command_match[3]);
+        try {
+            std::smatch command_match;
+            //Match PLACE X,Y,F command
+            if (std::regex_match(code, command_match, std::regex("(?:^|\\s+)PLACE\\s+(\\d+),(\\d+),(\\w+)"))) {
+                robot.place(std::stoi(command_match[1]), std::stoi(command_match[2]), command_match[3]);
+            }
+            //Match MOVE,LEFT,RIGHT,REPORT commands
+            if (std::regex_match(code, command_match, std::regex("(?:^|\\s+)(\\w+)(?=\\s|$)"))) {
+                robot.moveMap[command_match[1]]();
+            }            
         }
-        if (std::regex_match(code, std::regex("(?:^|\\s+)MOVE(?=\\s|$)"))) {
-            robot.move();
-        }
-        if (std::regex_match(code, std::regex("(?:^|\\s+)LEFT(?=\\s|$)"))) {
-            robot.left();
-        }
-        if (std::regex_match(code, std::regex("(?:^|\\s+)RIGHT(?=\\s|$)"))) {
-            robot.right();
-        }
-        if (std::regex_match(code, std::regex("(?:^|\\s+)REPORT(?=\\s|$)"))) {
-            robot.report();
+        catch (const std::bad_function_call& e) {
+            std::cout << "Invalid Command" << '\n';
         }
     }
 }
 
 int main(int argc, char** argv) {
+    //File input
     if (argc > 1) {
         std::ifstream ifs(argv[1]);
         if (ifs) {
             readInstructions(ifs);
         }
     }
+    //Stdin
     else {
+        std::cout << "Waiting for commands.  Send q to quit" << std::endl;
         readInstructions(std::cin);
     }
 }

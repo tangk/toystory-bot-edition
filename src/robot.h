@@ -11,6 +11,7 @@
 #include <vector>
 #include <any>
 #include <ostream>
+#include <functional>
 
 class Robot {
     int _x{-1}, _y{-1};
@@ -18,19 +19,15 @@ class Robot {
     bool _initialized = false;
     void _init();
 public:
-    Robot() = default;
-
+    Robot();
     bool initialized() const;
-
     void place(int x = -1, int y = -1, std::string f = "");
-
     void move();
-
     void right();
-
     void left();
-
     void report();
+    //Map of functions with similar signature
+    std::map<std::string, std::function<void(void)>> moveMap;
 };
 
 
