@@ -35,14 +35,14 @@ void Robot::_init() {
     }
 }
 
-void Robot::place(int x, int y, std::string f) {
+void Robot::place(int const& x, int const& y, std::string const& f) {
     _x = x;
     _y = y;
     _f = f;
     _init();
 }
 
-void Robot::report() {
+void Robot::report() const {
     if (!initialized()) {
         return;
     }

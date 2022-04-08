@@ -21,11 +21,11 @@ class Robot {
 public:
     Robot();
     bool initialized() const;
-    void place(int x = -1, int y = -1, std::string f = "");
+    void place(int const& x = -1, int const& y = -1, std::string const& f = "");
     void move();
     void right();
     void left();
-    void report();
+    void report() const;
     //Map of functions with similar signature
     std::map<std::string, std::function<void(void)>> moveMap;
 };

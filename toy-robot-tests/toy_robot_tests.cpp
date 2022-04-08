@@ -35,12 +35,6 @@ struct RobotStateOut : RobotStateTest {
     }
 };
 
-struct RobotInitializedTest : RobotTest {
-    void SetUp() override {
-        robot->place(0,0,"NORTH");
-    }
-};
-
 struct cout_redirect {
     cout_redirect( std::streambuf * new_buffer )
             : old( std::cout.rdbuf( new_buffer ) )
@@ -52,6 +46,12 @@ struct cout_redirect {
 
 private:
     std::streambuf * old;
+};
+
+struct RobotInitializedTest : RobotTest {
+    void SetUp() override {
+        robot->place(0,0,"NORTH");
+    }
 };
 
 struct RobotCommandTest : RobotTest, testing::WithParamInterface<RobotStateOut> {};
@@ -157,4 +157,13 @@ TEST_F(RobotInitializedTest, CustomMovementSomeValid) {
 
 TEST_F(RobotTest, TestInitialized) {
     EXPECT_EQ(robot->initialized(), false);
+}
+
+TEST_F(RobotInitializedTest, MoveMapTests) {
+    robot->moveMap["MOVE"]();
+    auto rs = RobotStateOut{0,1,"NORTH", true};
+    std::stringstream buf;
+    cout_redirect coutRedirect(buf.rdbuf());
+    robot->report();
+    EXPECT_EQ(rs.out(), buf.str());
 }
