@@ -17,7 +17,6 @@ class Robot {
     int _x{-1}, _y{-1};
     std::string _f;
     bool _initialized = false;
-    void _init();
 public:
     Robot();
     bool initialized() const;

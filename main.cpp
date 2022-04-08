@@ -11,19 +11,21 @@ void readInstructions(std::istream& in) {
         if (code == "q") {
             break;
         }
+        std::smatch command_match;
+        //Match PLACE X,Y,F command
+        if (std::regex_match(code, command_match, std::regex("(?:^|\\s+)PLACE\\s+(\\d+),(\\d+),(\\w+)"))) {
+            robot.place(std::stoi(command_match[1]), std::stoi(command_match[2]), command_match[3]);
+        }
+        std::string command = "";
         try {
-            std::smatch command_match;
-            //Match PLACE X,Y,F command
-            if (std::regex_match(code, command_match, std::regex("(?:^|\\s+)PLACE\\s+(\\d+),(\\d+),(\\w+)"))) {
-                robot.place(std::stoi(command_match[1]), std::stoi(command_match[2]), command_match[3]);
-            }
             //Match MOVE,LEFT,RIGHT,REPORT commands
             if (std::regex_match(code, command_match, std::regex("(?:^|\\s+)(\\w+)(?=\\s|$)"))) {
+                command = command_match[1];
                 robot.moveMap[command_match[1]]();
             }            
         }
         catch (const std::bad_function_call& e) {
-            std::cout << "Invalid Command" << '\n';
+            std::cerr << "Invalid Command: " << command << std::endl;
         }
     }
 }

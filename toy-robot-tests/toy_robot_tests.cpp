@@ -167,3 +167,12 @@ TEST_F(RobotInitializedTest, MoveMapTests) {
     robot->report();
     EXPECT_EQ(rs.out(), buf.str());
 }
+
+TEST_F(RobotInitializedTest, InvalidPlace) {
+    robot->place(1,2,"3");
+    auto rs = RobotStateOut{0,0,"NORTH", true};
+    std::stringstream buf;
+    cout_redirect coutRedirect(buf.rdbuf());
+    robot->report();
+    EXPECT_EQ(rs.out(), buf.str());
+}

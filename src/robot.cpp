@@ -24,22 +24,17 @@ Robot::Robot() {
                    });
 }
 
-void Robot::_init() {
-    std::vector<std::string> faces{"NORTH","EAST","WEST","SOUTH"};
-    auto found = std::find(faces.begin(), faces.end(), _f);
-    //Set to true if valid PLACE command has taken place
-    _initialized = true;
-    //Check if input is valid
-    if ((_x > MAX_X) || (_y > MAX_Y) || (_x < MIN_X) || (_y < MIN_Y) || !(found != faces.end())) {
-        _initialized = false;
-    }
-}
-
 void Robot::place(int const& x, int const& y, std::string const& f) {
+    std::vector<std::string> faces{"NORTH","EAST","WEST","SOUTH"};
+    auto found = std::find(faces.begin(), faces.end(), f);
+    //Check if input is valid
+    if ((x > MAX_X) || (y > MAX_Y) || (x < MIN_X) || (y < MIN_Y) || !(found != faces.end())) {
+        return;
+    }
     _x = x;
     _y = y;
     _f = f;
-    _init();
+    _initialized = true;
 }
 
 void Robot::report() const {
